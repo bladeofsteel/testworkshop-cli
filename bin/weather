@@ -3,5 +3,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$cont = \TestWorkshop\Weather\Bootstrap::init();
-echo $cont->get(\TestWorkshop\Weather\Console::class)->execute() . PHP_EOL;
+$client = new \GuzzleHttp\Client();
+$service  = new \TestWorkshop\Weather\Service($client);
+echo $service->fetchWeather($argv[1]) . PHP_EOL;

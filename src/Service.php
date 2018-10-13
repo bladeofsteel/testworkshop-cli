@@ -21,7 +21,7 @@ class Service
         $this->client = $client;
     }
 
-    public function fetchWeather(string $city, int $date)
+    public function fetchWeather(string $city): string
     {
         /** @var \GuzzleHttp\Psr7\Response $response */
         $response = $this->client->request('GET', "https://www.metaweather.com/api/location/search/?query={$city}");
@@ -29,9 +29,10 @@ class Service
 
         /** @var \GuzzleHttp\Psr7\Response $response */
         $response = $this->client->get(
-            "https://www.metaweather.com/api/location/{$data['woeid']}/" . date('Y/m/d/', $date)
+            "https://www.metaweather.com/api/location/{$data['woeid']}/" . date('Y/m/d/', time())
         );
+        $weather = \json_decode($response->getBody()->getContents(), true)[0];
 
-        return \json_decode($response->getBody()->getContents(), true);
+        return "{$weather['weather_state_name']} / {$weather['the_temp']} / {$weather['wind_speed']}";
     }
 }
