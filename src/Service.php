@@ -15,9 +15,14 @@ class Service
      * Service constructor.
      *
      * @param \GuzzleHttp\Client $client
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(Client $client)
+    public function __construct(Client $client = null)
     {
+        if (null === $client) {
+            $client = new Client();
+        }
         $this->client = $client;
     }
 
